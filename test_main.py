@@ -223,7 +223,7 @@ study_information = {
     "Protein-Levels": pd.DataFrame(quantitative_log2)
 }
 
-with pd.ExcelWriter('study_info_test_PDC000129.xlsx', engine='xlsxwriter') as writer:
+with pd.ExcelWriter('study_info_test.xlsx', engine='xlsxwriter') as writer:
     for sheet_name, df in study_information.items():
         if df is not None and not df.empty:  # Check if the DataFrame is not None and not empty
             df.to_excel(writer, sheet_name=sheet_name, index=False)
