@@ -170,4 +170,9 @@ exp_metadata_header = ['study_submitter_id', 'experiment_type', 'experiment_numb
 # File Metadata
 file_metadata_header = ['study_submitter_id', 'plex_or_folder_name', 'file_name',
        'fraction_number', 'data_category', 'file_type', 'file_format',
-       'md5sum', 'file_size', "sha1"]
+       'md5sum', 'file_size', "signedUrl"]
+
+file_metadata_header_2 = ['file_id', 'file_name', 'run_metadata_id', 'protocol', 'study_name',
+       'pdc_study_id', #'pdc_study_version', 'study_id', #'project_name',
+       'data_category', 'file_type', 'access', 'file_size',
+       'md5sum', "plex_or_folder_name"]
