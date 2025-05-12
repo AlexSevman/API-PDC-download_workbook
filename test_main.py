@@ -30,12 +30,11 @@ from test_for_loops import *
 # variables added in PDC portal
 
 try:
-    pdc_study_id_input = str(input("PDC study id: "))
-    offset_input = int(input("introduce offset, try 0 "))
-    limit_input = int(input("introduce limit_input, try 10 "))
-    data_type_input = str(input("data_type, try: log2_ratio: "))
+    pdc_study_id_input = str(input("Introduce a PDC study id, ie: PDC000443: "))
+    #offset_input = int(input("introduce offset, ie: 0 "))
+    #data_type_input = str(input("data_type, try: log2_ratio: "))
 except ValueError:
-    print("Please enter a valid number.")
+    print("Please enter a valid id.")
 
 
 #pdc_study_id_input = "PDC000219"
