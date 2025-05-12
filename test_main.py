@@ -189,6 +189,27 @@ expMetadat_data_2 = pd.DataFrame(matrix)
 to_remove = list(set(expMetadat_data_2.columns).difference(exp_metadata_header))
 Exp_Metadata = expMetadat_data_2.drop(columns=to_remove)
 Exp_Metadata = Exp_Metadata.reindex(columns=exp_metadata_header)
+tmt_columns = [
+    'tmt_126', 'tmt_127n', 'tmt_127c', 'tmt_128n', 'tmt_128c',
+    'tmt_129n', 'tmt_129c', 'tmt_130n', 'tmt_130c', 'tmt_131', 'tmt_131c'
+]
+
+# Function to extract aliquot_ids
+def extract_aliquots(cell):
+    if isinstance(cell, list):
+        return [entry.get('aliquot_id') for entry in cell if isinstance(entry, dict)]
+    return []
+
+# Function to format aliquot_ids
+def format_aliquot_ids(aliquot_list):
+    return [f"aliquot_id: {aliquot}" for aliquot in aliquot_list]
+
+# Modify Exp_Metadata in-place
+for col in tmt_columns:
+    if col in Exp_Metadata.columns:
+        Exp_Metadata[col] = Exp_Metadata[col].apply(extract_aliquots).map(format_aliquot_ids)
+
+
 
 # File Metadata
 
@@ -198,6 +219,7 @@ file_metadata_df = pd.DataFrame(matrix)
 to_remove = list(set(file_metadata_df.columns).difference(file_metadata_header))
 file_metada = file_metadata_df.drop(columns=to_remove)
 file_metada = file_metada.reindex(columns=file_metadata_header)
+
 
 # Quantitative data -- Remove for study summary download (include in jupyter nb)
 
