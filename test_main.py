@@ -271,8 +271,9 @@ study_information = {
     "File-Metadata": pd.DataFrame(file_metada),
 }
 
-print("preparing workbook")
-with pd.ExcelWriter('study_info_test.xlsx', engine='xlsxwriter') as writer:
+filename = f"Study_Data_{pdc_study_id_input}.xlsx"
+
+with pd.ExcelWriter(filename, engine='xlsxwriter') as writer:
     for sheet_name, df in study_information.items():
         if df is not None and not df.empty:  # Check if the DataFrame is not None and not empty
             df.to_excel(writer, sheet_name=sheet_name, index=False)
@@ -280,5 +281,8 @@ with pd.ExcelWriter('study_info_test.xlsx', engine='xlsxwriter') as writer:
             # Create an empty DataFrame and write it to the sheet
             empty_df = pd.DataFrame(columns= df.columns, index=range(10)).fillna('data not available')
             empty_df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+
+
 
 print('download completed')
