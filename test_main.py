@@ -5,18 +5,9 @@
 import requests
 import pandas as pd
 import json
-import seaborn as sns
-import matplotlib.pyplot as plt
-from scipy.stats import zscore
 import openpyxl
+from openpyxl import load_workbook
 import xlsxwriter
-import time
-import os
-
-#import nbformat
-#from nbconvert.preprocessors import ExecutePreprocessor
-#from nbclient import NotebookClient
-
 
 # invoke dependencies
 import function_query
