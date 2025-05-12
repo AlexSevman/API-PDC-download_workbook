@@ -4,7 +4,7 @@ import numpy as np
 
 # Project-program
 
-program_project_header = ["program_id", 'project_id']
+program_project_header = ["program_name", 'project_name']
 
 # Case_matrix
 case_matrix_header = ['case_submitter_id', "sample_submitter_id", "aliquot_submitter_id"]

@@ -60,8 +60,8 @@ matrix = json.loads(study_data.content)['data']['study']
 study_df = pd.DataFrame(matrix)
 program_project = study_df[program_project_header].transpose()
 program_project.columns = ['name']
-program_project["id"] = program_project.index
-program_project = program_project.reindex(columns=['id', 'name'])
+program_project[" "] = program_project.index
+program_project = program_project.reindex(columns=[' ', 'name'])
 
 
 # Case-Matrix
