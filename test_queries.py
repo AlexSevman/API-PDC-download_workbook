@@ -1178,6 +1178,40 @@ query filesPerStudy($pdc_study_identifier: String!, $offset: Int!, $limit: Int!)
 }
 """
 
+query_file_metadata_2 = """
+query fileMetadata($file_id: String!, $offset: Int!, $limit: Int!) {
+    fileMetadata(file_id: $file_id, offset: $offset, limit: $limit) {
+        file_id 
+        file_name 
+        file_size 
+        md5sum 
+        file_location 
+        file_submitter_id 
+        fraction_number 
+        experiment_type 
+        data_category 
+        file_type 
+        file_format 
+        protocol_id 
+        protocol_submitter_id 
+        plex_or_dataset_name 
+        analyte 
+        instrument 
+        study_run_metadata_submitter_id 
+        study_run_metadata_id 
+        aliquots { 
+            aliquot_id 
+            aliquot_submitter_id 
+            sample_id 
+            sample_submitter_id 
+            case_id 
+            case_submitter_id
+        }
+    }
+}
+"""
+
+
 # Quantitative data
 
 query_quantitative = """
