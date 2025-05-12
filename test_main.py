@@ -29,10 +29,19 @@ from test_for_loops import *
 
 # variables added in PDC portal
 
-pdc_study_id_input = "PDC000129"
-offset_input = 0 # set offset records to pull
-limit_input = 10 # limit number of records,
-data_type_input = 'log2_ratio' # option: unshared_log2_ratio 
+try:
+    pdc_study_id_input = str(input("PDC study id: "))
+    offset_input = int(input("introduce offset, try 0 "))
+    limit_input = int(input("introduce limit_input, try 10 "))
+    data_type_input = str(input("data_type, try: log2_ratio: "))
+except ValueError:
+    print("Please enter a valid number.")
+
+
+#pdc_study_id_input = "PDC000219"
+#offset_input = 0 # set offset records to pull
+#limit_input = 10 # limit number of records,
+#data_type_input = 'log2_ratio' # option: unshared_log2_ratio 
 
 # variables inhereted
 
