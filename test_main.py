@@ -51,8 +51,6 @@ variables = {
     "limit": 10000,  
    #"data_type": data_type_input 
 }
-# Readme
-readme = pd.read_excel("readme.xlsx")
 
 # Project-Program 
 study_data = query_pdc(query= query_study_info, variables=variables)
@@ -256,7 +254,6 @@ file_metada = file_metada.reindex(columns=file_metadata_header_2)
 
 # object dictionary:
 study_information = {
-    'Readme': pd.DataFrame(readme),
     "Project-Program": pd.DataFrame(program_project),
     "Case-Matrix": pd.DataFrame(case_matrix),
     "Case": pd.DataFrame(case),
@@ -272,7 +269,6 @@ study_information = {
     "Protocol": pd.DataFrame(protocol),
     "Exp_Metadata": pd.DataFrame(Exp_Metadata),
     "File-Metadata": pd.DataFrame(file_metada),
-    "Protein-Levels": pd.DataFrame(quantitative_log2)
 }
 
 with pd.ExcelWriter('study_info_test.xlsx', engine='xlsxwriter') as writer:
