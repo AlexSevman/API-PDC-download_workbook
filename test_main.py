@@ -221,6 +221,42 @@ file_metada = file_metadata_df.drop(columns=to_remove)
 file_metada = file_metada.reindex(columns=file_metadata_header)
 
 
+file_id_list = file_metadata_df["file_id"].dropna().astype(str).tolist()
+
+test_files = file_id_list[4:10]
+
+all_metadata = []
+
+# Loop through each file_id
+for file_id in file_id_list:
+    variables_2 = {
+        "file_id": file_id,
+        "offset": 0,
+        "limit": 2500
+    }
+    try:
+        result = query_pdc(query=query_file_metadata_2, variables=variables_2)
+        matrix = json.loads(result.content)['data']["fileMetadata"]
+        all_metadata.extend(matrix)
+    except Exception as e:
+        print(f"Failed for file_id {file_id}: {e}")
+
+all_metadata_df = pd.DataFrame(all_metadata)
+
+tmp = pd.merge(file_metadata_df, all_metadata_df, on="file_id")
+columns_to_keep = [col for col in tmp.columns if not col.endswith('_y')]
+tmp = tmp[columns_to_keep]
+tmp = tmp.rename(columns={col: col.rstrip('_x') for col in tmp.columns})
+tmp = tmp.rename(columns={'plex_or_dataset_name': "plex_or_folder_name", 
+                    "study_run_metadata_id": "run_metadata_id",
+                    "protocol_submitter_id": "protocol"})
+to_remove = list(set(tmp.columns).difference(file_metadata_header_2))
+file_metada = tmp.drop(columns=to_remove)
+file_metada = file_metada.reindex(columns=file_metadata_header_2)
+
+
+
+
 # Quantitative data -- Remove for study summary download (include in jupyter nb)
 
 quantitative_data = query_pdc(query= query_quantitative, variables=variables)
