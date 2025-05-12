@@ -12,6 +12,7 @@ import openpyxl
 import xlsxwriter
 import time
 import os
+
 #import nbformat
 #from nbconvert.preprocessors import ExecutePreprocessor
 #from nbclient import NotebookClient
@@ -282,6 +283,31 @@ with pd.ExcelWriter(filename, engine='xlsxwriter') as writer:
             empty_df = pd.DataFrame(columns= df.columns, index=range(10)).fillna('data not available')
             empty_df.to_excel(writer, sheet_name=sheet_name, index=False)
 
+# Create a study_summary page 
+study_transposed = study_df.transpose()
+study_transposed = study_transposed[:-1]
+
+files_count_df = pd.DataFrame(study_df.loc[0, "filesCount"])
+
+# Define a unique new sheet name
+sheet_name = "Study Summary"
+
+# Open writer to append a sheet (no custom 'book' logic)
+with pd.ExcelWriter(filename, engine="openpyxl", mode="a", if_sheet_exists="overlay") as writer:
+    # Write the transposed study_df
+    study_transposed.to_excel(writer, index=True, header=True, sheet_name=sheet_name, startrow=0)
+    
+    # Leave a gap and write the transposed filesCount
+    start_row = study_transposed.shape[0] + 5
+    files_count_df.to_excel(writer, index=False, header=True, sheet_name=sheet_name, startrow=start_row)
+
+wb = load_workbook(filename)
+
+sheet_order = wb.sheetnames
+sheet_order.insert(0, sheet_order.pop(sheet_order.index("Study Summary")))
+wb._sheets = [wb[sheet] for sheet in sheet_order]
+
+wb.save(filename)
 
 
 
