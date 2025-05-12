@@ -271,6 +271,7 @@ study_information = {
     "File-Metadata": pd.DataFrame(file_metada),
 }
 
+print("preparing workbook")
 with pd.ExcelWriter('study_info_test.xlsx', engine='xlsxwriter') as writer:
     for sheet_name, df in study_information.items():
         if df is not None and not df.empty:  # Check if the DataFrame is not None and not empty
