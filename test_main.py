@@ -222,7 +222,7 @@ for file_id in file_id_list:
     variables_2 = {
         "file_id": file_id,
         "offset": 0,
-        "limit": 2500
+        "limit": 20750
     }
     try:
         result = query_pdc(query=query_file_metadata_2, variables=variables_2)
