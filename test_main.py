@@ -47,11 +47,10 @@ except ValueError:
 # Variables
 variables = {
     "pdc_study_identifier": pdc_study_id_input,
-    "offset": offset_input, 
-    "limit": limit_input,  
-    "data_type": data_type_input 
+    "offset": 0, 
+    "limit": 10000,  
+   #"data_type": data_type_input 
 }
-
 # Readme
 readme = pd.read_excel("readme.xlsx")
 
