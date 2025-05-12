@@ -254,19 +254,6 @@ to_remove = list(set(tmp.columns).difference(file_metadata_header_2))
 file_metada = tmp.drop(columns=to_remove)
 file_metada = file_metada.reindex(columns=file_metadata_header_2)
 
-
-
-
-# Quantitative data -- Remove for study summary download (include in jupyter nb)
-
-quantitative_data = query_pdc(query= query_quantitative, variables=variables)
-matrix = json.loads(quantitative_data.content)['data']["quantDataMatrix"]
-if matrix is None:
-    quantitative_log2 = pd.DataFrame().fillna('Data not available')
-else:
-    quantitative_log2 = pd.DataFrame(matrix[1:], columns=matrix[0])
-
-
 # object dictionary:
 study_information = {
     'Readme': pd.DataFrame(readme),
