@@ -40,7 +40,7 @@ except ValueError:
 variables = {
     "pdc_study_identifier": pdc_study_id_input,
     "offset": 0, 
-    "limit": 10000,  
+    "limit": 20750,  
    #"data_type": data_type_input 
 }
 
@@ -243,6 +243,19 @@ tmp = tmp.rename(columns={'plex_or_dataset_name': "plex_or_folder_name",
 to_remove = list(set(tmp.columns).difference(file_metadata_header_2))
 file_metada = tmp.drop(columns=to_remove)
 file_metada = file_metada.reindex(columns=file_metadata_header_2)
+
+
+
+# File Metadata_2
+expMetadat_data_2.columns
+file_metadata_df.columns
+file_metadata_df["run_metadata_id"]
+file_metadata_header_2
+expMetadat_data_2.rename(columns={"plex_dataset_name": "plex_or_folder_name",
+                                  "study_run_metadata_id": "run_metadata_id",
+                                  "protocol_submitter_id": "protocol"})
+expMetadat_data_2["plex_dataset_name"]
+Exp_Metadata.columns
 
 # object dictionary:
 study_information = {
