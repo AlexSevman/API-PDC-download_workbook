@@ -344,11 +344,8 @@ def main():
     threads = []
 
     t1 = threading.Thread(target=block_case_sample)
-    print("block_case_matrix")
     t2 = threading.Thread(target=block_clinical)
-    print("block_clinical")
     t3 = threading.Thread(target=block_metadata)
-    print("block_metadata")
 
     threads.extend([t1, t2, t3])
 
