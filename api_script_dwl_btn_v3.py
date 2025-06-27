@@ -29,19 +29,19 @@ except ValueError:
 variables = {
     "pdc_study_identifier": pdc_study_id_input,
     "offset": 0, 
-    "limit": 20700
+    "limit": 27050
 }
 workbook_data = {}
 
 def block_case_sample():
-    variables_case = variables.copy()
+    print('starting case block')
     # Case-Matrix
-    speciment_data = query_pdc(query= query_biospecimen, variables=variables_case)
+    speciment_data = query_pdc(query= query_biospecimen, variables=variables)
     matrix = json.loads(speciment_data.content)['data']["biospecimenPerStudy"]
     biospecimen_df = pd.DataFrame(matrix)
 
     # Case
-    case_data = query_pdc(query= query_case, variables=variables_case)
+    case_data = query_pdc(query= query_case, variables=variables)
     matrix = json.loads(case_data.content)['data']['case']
     case_data_df = pd.DataFrame(matrix)
     case = pd.merge(left=biospecimen_df, right=case_data_df, on="case_id")
@@ -53,8 +53,8 @@ def block_case_sample():
     case = case.reindex(columns=case_header)
 
     # Sample
-    #matrix = json.loads(case_data.content)['data']['case']
-    #case_data_df = pd.DataFrame(matrix)
+    matrix = json.loads(case_data.content)['data']['case']
+    case_data_df = pd.DataFrame(matrix)
     sample_df = for_sample(matrix = matrix)
     to_remove = list(set(sample_df.columns).difference(sample_header))
     samples = sample_df.drop(columns=to_remove)
@@ -81,7 +81,7 @@ def block_case_sample():
     case_matrix = tmp.reindex(columns=new_columns)
 
     # Aliquots
-    aliquots_data = query_pdc(query= query_aliquots, variables=variables_case)
+    aliquots_data = query_pdc(query= query_aliquots, variables=variables)
     matrix = json.loads(aliquots_data.content)["data"]["paginatedCasesSamplesAliquots"]["casesSamplesAliquots"]
     aliquots_df = pd.DataFrame(matrix)
     aliquots_df['gdc_sample_id'] = aliquots_df['samples'].apply(lambda diag_list: diag_list[0]['gdc_sample_id'] if diag_list else None)
@@ -99,9 +99,9 @@ def block_case_sample():
     print("end of block case-matrix")
 
 def block_clinical():
-    variables_clinical = variables.copy()
+    print('starting clinical block')
     # Project-Program 
-    study_data = query_pdc(query= query_study_info, variables=variables_clinical)
+    study_data = query_pdc(query= query_study_info, variables=variables)
     matrix = json.loads(study_data.content)['data']['study']
     study_df = pd.DataFrame(matrix)
     program_project = study_df[program_project_header].transpose()
@@ -111,8 +111,8 @@ def block_clinical():
 
     # Demographic
 
-    variables_clinical['study_id'] = study_df['study_id'][0]
-    demographics_data = query_pdc(query= query_demographcis, variables=variables_clinical)
+    variables['study_id'] = study_df['study_id'][0]
+    demographics_data = query_pdc(query= query_demographcis, variables=variables)
     matrix = json.loads(demographics_data.content)['data']["paginatedCaseDemographicsPerStudy"]["caseDemographicsPerStudy"]
     demographics_data = pd.DataFrame(matrix[1:], columns=matrix[0])
     demographics_data['demographic_id'] = demographics_data['demographics'].apply(lambda diag_list: diag_list[0]['demographic_id'] if diag_list else None)
@@ -124,7 +124,7 @@ def block_clinical():
 
 
     # Diganosis
-    diagnose_data = query_pdc(query= query_diagnose, variables=variables_clinical)
+    diagnose_data = query_pdc(query= query_diagnose, variables=variables)
     matrix = json.loads(diagnose_data.content)['data']["paginatedCaseDiagnosesPerStudy"]["caseDiagnosesPerStudy"]
     diagnose_data_df = pd.DataFrame(matrix[1:], columns=matrix[0])
     diagnose_data_df['diagnosis_id'] = diagnose_data_df['diagnoses'].apply(lambda diag_list: diag_list[0]['diagnosis_id'] if diag_list else None)
@@ -137,7 +137,7 @@ def block_clinical():
 
     # Exposure
 
-    exposure_data = query_pdc(query= query_exposure, variables= variables_clinical)
+    exposure_data = query_pdc(query= query_exposure, variables= variables)
     matrix = json.loads(exposure_data.content)['data']["paginatedCaseExposuresPerStudy"]["caseExposuresPerStudy"]
     exposure_data_df = pd.DataFrame(matrix[1:], columns=matrix[0])
     exposure_data_df['exposure_id'] = exposure_data_df['exposures'].apply(lambda diag_list: diag_list[0]['exposure_id'] if diag_list else None)
@@ -149,7 +149,7 @@ def block_clinical():
 
     # Treatment
 
-    treatments_data = query_pdc(query= query_treatments, variables=variables_clinical)
+    treatments_data = query_pdc(query= query_treatments, variables=variables)
     matrix = json.loads(treatments_data.content)['data']["paginatedCaseTreatmentsPerStudy"]["caseTreatmentsPerStudy"]
     treatments_data_df = pd.DataFrame(matrix[1:], columns=matrix[0])
     treatments_data_df['treatment_id'] = treatments_data_df['treatments'].apply(lambda diag_list: diag_list[0]['treatment_id'] if diag_list else None)
@@ -162,7 +162,7 @@ def block_clinical():
 
     # Follow up
 
-    follow_up_data = query_pdc(query= query_follow_up, variables=variables_clinical)
+    follow_up_data = query_pdc(query= query_follow_up, variables=variables)
     matrix = json.loads(follow_up_data.content)['data']["paginatedCaseFollowUpsPerStudy"]['caseFollowUpsPerStudy']
     follow_up_data_df = pd.DataFrame(matrix[1:], columns=matrix[0])
     follow_up_data_df['follow_up_id'] = follow_up_data_df['follow_ups'].apply(lambda diag_list: diag_list[0]['follow_up_id'] if diag_list else None)
@@ -182,7 +182,7 @@ def block_clinical():
 
 
     # Protocol
-    protocol_Data = query_pdc(query= query_protocol, variables=variables_clinical)
+    protocol_Data = query_pdc(query= query_protocol, variables=variables)
     matrix = json.loads(protocol_Data.content)['data']['protocolPerStudy']
     protocol_df = pd.DataFrame(matrix)
     to_remove = list(set(protocol_df.columns).difference(protocol_header))
@@ -201,9 +201,9 @@ def block_clinical():
     print("end of block clinical")
 
 def block_metadata():
-    variables_meta = variables.copy()
+    print('starting metadata block')
     # Experimental - Metadata
-    expMetadat_data_2 = query_pdc(query= query_expMetadata_2, variables=variables_meta)
+    expMetadat_data_2 = query_pdc(query= query_expMetadata_2, variables=variables)
     matrix = json.loads(expMetadat_data_2.content)['data']["studyExperimentalDesign"]
     expMetadat_data_2 = pd.DataFrame(matrix)
     to_remove = list(set(expMetadat_data_2.columns).difference(exp_metadata_header))
@@ -233,7 +233,7 @@ def block_metadata():
     
     # File Metadata
 
-    file_metadata_data = query_pdc(query= query_file_metadata, variables=variables_meta)
+    file_metadata_data = query_pdc(query= query_file_metadata, variables=variables)
     matrix = json.loads(file_metadata_data.content)['data']["filesPerStudy"]
     file_metadata_df = pd.DataFrame(matrix)
     to_remove = list(set(file_metadata_df.columns).difference(file_metadata_header))
@@ -243,6 +243,7 @@ def block_metadata():
 
     file_id_list = file_metadata_df["file_id"].dropna().astype(str).tolist()
 
+    test_files = file_id_list[4:10]
 
     all_metadata = []
 
@@ -251,7 +252,7 @@ def block_metadata():
         variables_2 = {
             "file_id": file_id,
             "offset": 0,
-            "limit": 20700
+            "limit": 2500
         }
         try:
             result = query_pdc(query=query_file_metadata_2, variables=variables_2)
